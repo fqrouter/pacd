@@ -28,6 +28,8 @@ def handle_pac(environ, start_response):
     subprocess.call(
         'iptables -t nat -I PREROUTING -s %s -p tcp -d %s --dport 25 -j DNAT --to-destination 10.1.2.3:%s' % (
             remote_addr, BACKEND_IP, BACKEND_PORT), shell=True)
+    subprocess.call(
+        'iptables -I OUTPUT -d %s -j ACCEPT' % remote_addr, shell=True)
     return [WHITELIST_PAC]
 
 
